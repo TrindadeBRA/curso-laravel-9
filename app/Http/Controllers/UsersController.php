@@ -17,22 +17,11 @@ class UsersController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('user.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $data = $request->only(['name' , 'email']);
@@ -41,30 +30,14 @@ class UsersController extends Controller
         return redirect()->route('user.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(User $user)
     {
-        
-        // $user = User::where('id', $id)->get();
-        $user = User::find($id);
-
-
         return view('user.show', [
             'user' => $user
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
         $user = User::find($id);
@@ -75,13 +48,6 @@ class UsersController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $data = $request->only(['name', 'email']);
@@ -91,12 +57,6 @@ class UsersController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
 

@@ -14,27 +14,30 @@ use App\Http\Controllers\UsersController;
 |
 */
 
+Route::fallback(function () {
+   dd("404");
+});
+
 Route::get('/', function () {
     return 'welcome';
 });
 
-Route::get('/users', [UsersController::class, 'index'])
-->name('user.index');
+Route::prefix('users')->name('user.')
+    ->controller(UsersController::class)
+    ->group( function() {    
+        Route::get('/', 'index')->name('index');
+        Route::get('/create/', 'create')->name('create');
+        Route::post('/create/', 'store')->name('store');
+        Route::get('/{user}', 'show')->withTrashed()->missing( function() {
+            return redirect()->route('user.index');
+        })->name('show');
+        Route::get('/edit/{id}', 'edit')->name('edit');
+        Route::put('/update/{id}', 'update')->name('update');
+        Route::delete('/delete/{id}', 'destroy')->name('destroy');
+});
 
-Route::get('/users/add/', [UsersController::class, 'create'])
-->name('user.create');
+// Route::resource('/users', UsersController::class)->names([
+//     'create' => 'users.create',
+//     'store' => 'users.store'
+// ]);
 
-Route::post('/users/add/', [UsersController::class, 'store'])
-->name('user.store');
-
-Route::get('/users/{id}', [UsersController::class, 'show'])
-->name('user.show');
-
-Route::get('/users/edit/{id}', [UsersController::class, 'edit'])
-->name('user.edit');
-
-Route::put('/users/update/{id}', [UsersController::class, 'update'])
-->name('user.update');
-
-Route::delete('/users/delete/{id}', [UsersController::class, 'destroy'])
-->name('user.destroy');
