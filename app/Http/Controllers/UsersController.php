@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UsersController extends Controller
 
@@ -24,8 +25,16 @@ class UsersController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->only(['name' , 'email']);
-        $data['password'] = bcrypt(rand(12345678, 987654321));
+
+        $request->validate([
+            'name' => ['required', 'string'],
+            'email' => ['required', 'unique:users', 'email'],
+            'password' => ['required', 'string', 'min:8', 'max:16']
+        ]);
+
+
+        $data = $request->only(['name' , 'email', 'password']);
+        // $data['password'] = bcrypt(rand(12345678, 987654321));
         User::create($data);
         return redirect()->route('user.index');
     }
@@ -42,6 +51,7 @@ class UsersController extends Controller
     {
         $user = User::find($id);
 
+        if(!$user) throw new ModelNotFoundException();
 
         return view('user.edit', [
             'user' => $user
@@ -50,7 +60,14 @@ class UsersController extends Controller
 
     public function update(Request $request, $id)
     {
-        $data = $request->only(['name', 'email']);
+
+        $request->validate([
+            'name' => ['required', 'string'],
+            'email' => ['required', 'unique:users', 'email'],
+            'password' => ['required', 'string', 'min:8', 'max:16']
+        ]);
+
+        $data = $request->only(['name', 'email', 'password']);
         $user = User::find($id);
 
         $user->update($data);
@@ -61,9 +78,11 @@ class UsersController extends Controller
     {
 
         $user = User::find($id);
+
+        if(!$user) throw new ModelNotFoundException();
+
         $user->delete();
         return redirect()->back();
-
 
     }
 }

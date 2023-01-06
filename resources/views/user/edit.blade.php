@@ -26,6 +26,11 @@
             <label for="email" class="form-label">E-mail</label>
             <input type="email" value="{{$user->email}}" class="form-control" name="email" id="email">
           </div>
+          
+          <div class="mb-3">
+            <label for="password" class="form-label">E-mail</label>
+            <input type="password" value="{{$user->password}}" class="form-control" name="password" id="password">
+          </div>
 
           <button type="submit" class="btn btn-primary">Atualizar</button>
         </form>

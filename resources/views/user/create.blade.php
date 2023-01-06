@@ -16,6 +16,11 @@
 
         <form method="POST" action="{{route('user.store')}}">
           @csrf
+
+          @foreach ($errors->all() as $error)
+              <li> {{ $error }} </li>
+          @endforeach
+
           <div class="mb-3">
             <label for="name" class="form-label">Name</label>
             <input type="text" class="form-control" name="name" id="name">
@@ -26,7 +31,12 @@
             <input type="email" class="form-control" name="email" id="email">
           </div>
 
-          <button type="submit" class="btn btn-primary">Atualizar</button>
+          <div class="mb-3">
+            <label for="password" class="form-label">Senha</label>
+            <input type="password" placeholder="************" class="form-control" name="password" id="password">
+          </div>
+
+          <button type="submit" class="btn btn-primary">Adicionar</button>
         </form>
         
     </main>
