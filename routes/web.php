@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsersController;
+use App\Http\Middleware\MyFirstMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,14 +16,14 @@ use App\Http\Controllers\UsersController;
 */
 
 Route::fallback(function () {
-   dd("404");
+    dd("404");
 });
 
 Route::get('/', function () {
     return 'welcome';
 });
 
-Route::prefix('users')->name('user.')
+Route::prefix('users')->middleware(MyFirstMiddleware::class)->name('user.')
     ->controller(UsersController::class)
     ->group( function() {    
         Route::get('/', 'index')->name('index');
