@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MoviesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsersController;
 use App\Http\Middleware\MyFirstMiddleware;
@@ -23,7 +24,11 @@ Route::get('/', function () {
     return 'welcome';
 });
 
-Route::prefix('users')->middleware(MyFirstMiddleware::class)->name('user.')
+Route::get('/movies', MoviesController::class);
+
+Route::prefix('users')
+    ->middleware(MyFirstMiddleware::class)
+    ->name('user.')
     ->controller(UsersController::class)
     ->group( function() {    
         Route::get('/', 'index')->name('index');
